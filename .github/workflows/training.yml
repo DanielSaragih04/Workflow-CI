@@ -40,10 +40,20 @@ jobs:
       - name: Upload MLflow Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mlflow-results
-          path: MLProject/mlruns
+          name: trained-model
+          path: MLProject/model
 
       # Build Docker Image
+      - name: Login Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker Image
         run: |
-          docker build -t diabetes-model ./MLProject
+          docker build -t danielsaragih/diabetes-mlflow:latest ./MLProject
+
+      - name: Push Docker Image
+        run: |
+          docker push danielsaragih/diabetes-mlflow:latest
