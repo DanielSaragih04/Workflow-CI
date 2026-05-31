@@ -1,0 +1,7 @@
+- name: Install Dependencies
+  run: |
+    pip install pandas
+    pip install numpy
+    pip install scikit-learn
+    pip install mlflow
+    pip install joblib
