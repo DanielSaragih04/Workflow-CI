@@ -1,4 +1,5 @@
 import os
+import joblib
 import pandas as pd
 import numpy as np
 import mlflow
@@ -14,7 +15,7 @@ from sklearn.metrics import (
 # KONFIGURASI
 # ─────────────────────────────────────────────
 DATA_PATH    = os.path.join(os.path.dirname(__file__),
-               "diabetes_preprocessing", "diabetes_preprocessed.csv")
+               "diabetes_preprocessed.csv")
 EXPERIMENT   = "Diabetes_Prediction_Basic"
 RANDOM_STATE = 42
 
@@ -64,7 +65,8 @@ with mlflow.start_run(run_name="RandomForest_Autolog"):
     )
     print("Training dimulai...")
     model.fit(X_train, y_train)
-    print("Training selesai...")
+    joblib.dump(model, "model.pkl")
+    print("Model berhasil disimpan: model.pkl")
     
     y_pred = model.predict(X_test)
 
@@ -74,6 +76,12 @@ with mlflow.start_run(run_name="RandomForest_Autolog"):
     rec  = recall_score(y_test, y_pred)
     f1   = f1_score(y_test, y_pred)
     auc  = roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])
+
+    mlflow.log_metric("accuracy", acc)
+    mlflow.log_metric("precision", prec)
+    mlflow.log_metric("recall", rec)
+    mlflow.log_metric("f1_score", f1)
+    mlflow.log_metric("roc_auc", auc)
 
     print("\n[4/4] Hasil Evaluasi Model:")
     print(f"      Accuracy : {acc:.4f}")
@@ -85,3 +93,5 @@ with mlflow.start_run(run_name="RandomForest_Autolog"):
 print("\n✅ Training selesai! Buka MLflow UI dengan perintah:")
 print("   mlflow ui")
 print("   Lalu akses http://127.0.0.1:5000\n")
+
+# Workflow CI Updated
