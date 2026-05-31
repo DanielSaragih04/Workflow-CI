@@ -14,8 +14,11 @@ from sklearn.metrics import (
 # ─────────────────────────────────────────────
 # KONFIGURASI
 # ─────────────────────────────────────────────
-DATA_PATH    = os.path.join(os.path.dirname(__file__),
-               "diabetes_preprocessed.csv")
+DATA_PATH = os.path.join(
+    os.path.dirname(__file__),
+    "diabetes_preprocessing",
+    "diabetes_preprocessed.csv"
+)
 EXPERIMENT   = "Diabetes_Prediction_Basic"
 RANDOM_STATE = 42
 
@@ -65,8 +68,13 @@ with mlflow.start_run(run_name="RandomForest_Autolog"):
     )
     print("Training dimulai...")
     model.fit(X_train, y_train)
-    joblib.dump(model, "model.pkl")
-    print("Model berhasil disimpan: model.pkl")
+    os.makedirs("model", exist_ok=True)
+
+    joblib.dump(
+        model,"model/random_forest_model.pkl"
+    )
+
+    print("Model berhasil disimpan.")
     
     y_pred = model.predict(X_test)
 
