@@ -1,4 +1,4 @@
-name: diabetes-training
+name: diabetes-prediction
 
 conda_env: conda.yaml
 

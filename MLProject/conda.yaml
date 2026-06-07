@@ -1,15 +1,15 @@
 name: diabetes-env
 
 channels:
-  - defaults
+  - conda-forge
 
 dependencies:
   - python=3.11
+
   - pip
 
   - pip:
+      - mlflow
       - pandas
       - numpy
       - scikit-learn
-      - mlflow
-      - joblib
