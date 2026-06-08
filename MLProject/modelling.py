@@ -57,46 +57,48 @@ print(f"\n[2/4] MLflow experiment: '{EXPERIMENT}'")
 # ─────────────────────────────────────────────
 print("\n[3/4] Melatih model RandomForestClassifier...")
 
-mlflow.sklearn.autolog()
+# mlflow.sklearn.autolog()
 
-with mlflow.start_run(run_name="RandomForest_Autolog"):
-    model = RandomForestClassifier(
-        n_estimators=20,
-        max_depth=5,
-        random_state=RANDOM_STATE,
-        n_jobs=-1
-    )
-    print("Training dimulai...")
-    model.fit(X_train, y_train)
-    os.makedirs("model", exist_ok=True)
+model = RandomForestClassifier(
+    n_estimators=20,
+    max_depth=5,
+    random_state=RANDOM_STATE,
+    n_jobs=-1
+)
 
-    joblib.dump(
-        model,"model/random_forest_model.pkl"
-    )
+print("Training dimulai...")
+model.fit(X_train, y_train)
 
-    print("Model berhasil disimpan.")
-    
-    y_pred = model.predict(X_test)
+os.makedirs("model", exist_ok=True)
 
-    # Tampilkan metrik di terminal
-    acc  = accuracy_score(y_test, y_pred)
-    prec = precision_score(y_test, y_pred)
-    rec  = recall_score(y_test, y_pred)
-    f1   = f1_score(y_test, y_pred)
-    auc  = roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])
+joblib.dump(
+    model,
+    "model/random_forest_model.pkl"
+)
 
-    mlflow.log_metric("accuracy", acc)
-    mlflow.log_metric("precision", prec)
-    mlflow.log_metric("recall", rec)
-    mlflow.log_metric("f1_score", f1)
-    mlflow.log_metric("roc_auc", auc)
+print("Model berhasil disimpan.")
 
-    print("\n[4/4] Hasil Evaluasi Model:")
-    print(f"      Accuracy : {acc:.4f}")
-    print(f"      Precision: {prec:.4f}")
-    print(f"      Recall   : {rec:.4f}")
-    print(f"      F1-Score : {f1:.4f}")
-    print(f"      ROC-AUC  : {auc:.4f}")
+y_pred = model.predict(X_test)
+
+# Tampilkan metrik di terminal
+acc  = accuracy_score(y_test, y_pred)
+prec = precision_score(y_test, y_pred)
+rec  = recall_score(y_test, y_pred)
+f1   = f1_score(y_test, y_pred)
+auc  = roc_auc_score(y_test, model.predict_proba(X_test)[:, 1])
+
+mlflow.log_metric("accuracy", acc)
+mlflow.log_metric("precision", prec)
+mlflow.log_metric("recall", rec)
+mlflow.log_metric("f1_score", f1)
+mlflow.log_metric("roc_auc", auc)
+
+print("\n[4/4] Hasil Evaluasi Model:")
+print(f"      Accuracy : {acc:.4f}")
+print(f"      Precision: {prec:.4f}")
+print(f"      Recall   : {rec:.4f}")
+print(f"      F1-Score : {f1:.4f}")
+print(f"      ROC-AUC  : {auc:.4f}")
 
 print("\n✅ Training selesai! Buka MLflow UI dengan perintah:")
 print("   mlflow ui")
