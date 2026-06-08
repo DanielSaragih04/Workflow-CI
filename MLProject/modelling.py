@@ -49,8 +49,8 @@ print(f"      Train: {X_train.shape} | Test: {X_test.shape}")
 #   dagshub.init(repo_owner="username", repo_name="repo", mlflow=True)
 #   mlflow.set_tracking_uri("https://dagshub.com/username/repo.mlflow")
 
-mlflow.set_experiment(EXPERIMENT)
-print(f"\n[2/4] MLflow experiment: '{EXPERIMENT}'")
+# mlflow.set_experiment(EXPERIMENT)
+print("\n[2/4] MLflow tracking aktif")
 
 # ─────────────────────────────────────────────
 # 3. TRAINING DENGAN AUTOLOG
